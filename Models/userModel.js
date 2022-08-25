@@ -1,10 +1,7 @@
 const mongoose = require("mongoose");
 
 const user = new mongoose.Schema({
-  UserType: {
-    type: String,
-    required: true,
-  },
+  
   FullName: {
     type: String,
     required: true,

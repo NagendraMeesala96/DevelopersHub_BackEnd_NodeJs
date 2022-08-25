@@ -28,17 +28,18 @@ app.get("/", (req, res) => {
 //Register Users
 app.post("/register", async (req, res) => {
   try {
-    const { UserType, FullName, Email, Password, Mobile, Skills, ProfilePic } =
-      req.body;
+    const { FullName, Email, Password, Mobile, Skills, ProfilePic } = req.body;
 
     const existUser = await user.findOne({ Email });
 
     if (existUser) {
-      return res.status(400).send("User Already Registered");
+      return res.status(400).json({
+        status:"User Already Registered",
+        data:existUser
+      });
     }
 
     let newUser = new user({
-      UserType,
       FullName,
       Email,
       Password,
@@ -54,7 +55,10 @@ app.post("/register", async (req, res) => {
       data: newUser,
     });
   } catch (error) {
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status:"Server Error",
+      data:error
+    })
   }
 });
 //Delete Employee by ID
@@ -168,33 +172,30 @@ app.get("/allClients", middleware, async (req, res) => {
 //ClientPost
 app.post("/addClientPost", middleware, async (req, res) => {
   try {
-    const {
-      PostTitle,
-      Description,
-      BidPrice,
-      RequiredSkills,
-      PostExpiryDate,
-    } = req.body;
+    const { PostTitle, Description, BidPrice, RequiredSkills } =
+      req.body;
 
     let exist = await client.findById(req.users.id);
+    console.log(exist); 
     let newPost = new clientPost({
       OwnerDetails: {
         ClientName: exist.FullName,
         ClientNum: exist.Mobile,
-        ClientEmail:exist.Email,
-        ClientProfilePic:exist.ProfilePic
+        ClientEmail: exist.Email,
+        ClientProfilePic: exist.ProfilePic,
       },
       PostTitle,
       Description,
       BidPrice,
       RequiredSkills,
-      PostExpiryDate,
     });
     await newPost.save();
-    return res.status(200).send("SuccessFully Submitted Post");
+    return res.status(200).json({
+      status:"Post Published Successfully",
+      data:newPost
+    });
   } catch (error) {
     console.log(error);
-
     return res.status(500).send("Server Error");
   }
 });
@@ -399,15 +400,14 @@ app.put("/UpdateBid/:id", async (req, res) => {
 //Get My Profile
 app.post("/myProfile", middleware, async (req, res) => {
   const { UserType } = req.body;
-  
-    try {
-      let userData = await user.findById(req.users.id);
-      return res.status(200).json(userData);
-    } catch (error) {
-      console.log(error);
-      return res.status(500).send("Server Error");
-    }
 
+  try {
+    let userData = await user.findById(req.users.id);
+    return res.status(200).json(userData);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Server Error");
+  }
 });
 
 //Add Review
@@ -455,7 +455,6 @@ app.get("/UserProfile/:id", async (req, res) => {
     const data = await user.findById(req.params.id);
 
     return res.json(data);
-    
   } catch (error) {
     console.log(error);
 
