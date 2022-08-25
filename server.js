@@ -61,6 +61,42 @@ app.post("/register", async (req, res) => {
     })
   }
 });
+//ClientRegister
+app.post("/Client/register", async (req, res) => {
+  try {
+    const { FullName, Email, Password, Mobile, ProfilePic } = req.body;
+
+    const existUser = await client.findOne({ Email });
+
+    if (existUser) {
+      return res.status(400).json({
+        status:"User Already Registered",
+        data:existUser
+      });
+    }
+
+    let newUser = new client({
+      FullName,
+      Email,
+      Password,
+      Mobile,
+      Skills,
+      ProfilePic,
+    });
+
+    await newUser.save();
+
+    return res.status(200).json({
+      status: "User Registered Successfully",
+      data: newUser,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status:"Server Error",
+      data:error
+    })
+  }
+});
 //Delete Employee by ID
 app.delete("/employee/:id", async (req, res) => {
   try {
