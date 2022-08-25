@@ -80,7 +80,6 @@ app.post("/Client/register", async (req, res) => {
       Email,
       Password,
       Mobile,
-      Skills,
       ProfilePic,
     });
 
@@ -91,6 +90,7 @@ app.post("/Client/register", async (req, res) => {
       data: newUser,
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       status:"Server Error",
       data:error

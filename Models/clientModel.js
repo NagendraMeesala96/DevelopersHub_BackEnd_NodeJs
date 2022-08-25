@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 
 const client = new mongoose.Schema({
   
-  UserType:{
-    type: String,
-    required: true,
-  },  
   FullName: {
     type: String,
     required: true,
