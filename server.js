@@ -453,6 +453,8 @@ app.post("/addReview", middleware, async (req, res) => {
 
     const exist = await client.findById(req.users.id);
 
+    console.log(req.users.id)
+
     const newReview = new review({
       taskProvider: exist.FullName,
       taskWorker,
@@ -460,11 +462,16 @@ app.post("/addReview", middleware, async (req, res) => {
       reviewContent,
     });
     newReview.save();
-    return res.status(200).send("Submitted Review");
+    return res.status(200).json({
+      status:"Review Added",
+    });
   } catch (error) {
     console.log(error);
 
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status:"Server Error",
+      data:error
+    });
   }
 });
 
@@ -675,7 +682,42 @@ app.put("/UpdateSocialMedia/", middleware, async (req, res) => {
   }
 });
 
-//Update social Media
+//Update social Media By ID
+app.put("/UpdateSocialMedia/:id", async (req, res) => {
+  const { Facebook, Instagram, GitHub, LinkedIn, Website, Twitter } = req.body;
+
+  try {
+    user.findByIdAndUpdate(
+      req.params.id,
+      {
+        SocialMedia: {
+          Facebook,
+          Instagram,
+          GitHub,
+          LinkedIn,
+          Website,
+          Twitter,
+        },
+      },
+      (err, docs) => {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+
+    let userData = await user.findById(req.params.id);
+    return res.status(200).json({
+      status: "Updated",
+      data: userData,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Server Error");
+  }
+});
+
+//Update Personal Details 
 app.put("/UpdatePersonalDetails/", middleware, async (req, res) => {
   const { FullName, JobRole, Mobile, Skills, Address, Projects } = req.body;
 
@@ -705,6 +747,42 @@ app.put("/UpdatePersonalDetails/", middleware, async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).send("Server Error");
+  }
+});
+
+//Update Personal Details  By ID
+app.put("/UpdatePersonalDetails/:id", async (req, res) => {
+  const { FullName, JobRole, Mobile, Skills, Address, Projects } = req.body;
+
+  try {
+    user.findByIdAndUpdate(
+      req.params.id,
+      {
+        FullName,
+        JobRole,
+        Mobile,
+        Skills,
+        Address,
+        Projects,
+      },
+      (err, docs) => {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+
+    let userData = await user.findById(req.params.id);
+    return res.status(200).json({
+      status: "Educational Details Updated",
+      data: userData,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status:"Server Error",
+      data:error
+    });
   }
 });
 
@@ -743,7 +821,52 @@ app.put("/UpdateEducation/", middleware, async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status:"Server Error",
+      data:error
+    });
+  }
+});
+
+//Update Education By ID
+app.put("/UpdateEducation/:id", async (req, res) => {
+  const {
+    CollegeName1,
+    Percentage1,
+    CollegeName2,
+    Percentage2,
+    SchoolName,
+    Percentage3,
+  } = req.body;
+  console.log(Percentage2);
+  try {
+    user.findByIdAndUpdate(
+      req.params.id,
+      {
+        Education: {
+          Graduation: { CollegeName1, Percentage1 },
+          Secondary: { CollegeName2, Percentage2 },
+          School: { SchoolName, Percentage3 },
+        },
+      },
+      (err, docs) => {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+
+    let userData = await user.findById(req.params.id);
+    return res.status(200).json({
+      status: "Personal Details Updated",
+      data: userData,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status:"Server Error",
+      data:error
+    });
   }
 });
 
@@ -772,7 +895,42 @@ app.put("/UpdateImg/", middleware, async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status:"Server Error",
+      data:error
+    });
+  }
+});
+
+//Update Img By ID
+
+app.put("/UpdateImg/:id", async (req, res) => {
+  const { ProfilePic } = req.body;
+
+  try {
+    user.findByIdAndUpdate(
+      req.params.id,
+      {
+        ProfilePic,
+      },
+      (err, docs) => {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+
+    let userData = await user.findById(req.params.id);
+    return res.status(200).json({
+      status: "ProfilePic Updated",
+      data: userData,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status:"Server Error",
+      data:error
+    });
   }
 });
 
