@@ -266,11 +266,15 @@ app.get("/allPosts", middleware, async (req, res) => {
 //Delete Post by ID
 app.delete("/Post/:id", async (req, res) => {
   try {
+
     await clientPost.findByIdAndDelete(req.params.id);
-
     console.log("Post Deleted");
-
-    return res.json(await clientPost.find());
+    let AllData = await clientPost.find();
+    console.log(AllData)
+    return res.status(200).json({
+      status:"Post Deleted",
+      data:AllData
+    });
   } catch (err) {
     console.log(err.message);
   }
@@ -708,7 +712,7 @@ app.put("/UpdateSocialMedia/:id", async (req, res) => {
 
     let userData = await user.findById(req.params.id);
     return res.status(200).json({
-      status: "Updated",
+      status: "Social Medial Updated",
       data: userData,
     });
   } catch (error) {
@@ -741,7 +745,7 @@ app.put("/UpdatePersonalDetails/", middleware, async (req, res) => {
 
     let userData = await user.findById(req.users.id);
     return res.status(200).json({
-      status: "Educational Details Updated",
+      status: "Personal Details Updated",
       data: userData,
     });
   } catch (error) {
@@ -774,7 +778,7 @@ app.put("/UpdatePersonalDetails/:id", async (req, res) => {
 
     let userData = await user.findById(req.params.id);
     return res.status(200).json({
-      status: "Educational Details Updated",
+      status: "Personal Details Updated",
       data: userData,
     });
   } catch (error) {
@@ -816,7 +820,7 @@ app.put("/UpdateEducation/", middleware, async (req, res) => {
 
     let userData = await user.findById(req.users.id);
     return res.status(200).json({
-      status: "Personal Details Updated",
+      status: "Educational Details Updated",
       data: userData,
     });
   } catch (error) {
@@ -858,7 +862,7 @@ app.put("/UpdateEducation/:id", async (req, res) => {
 
     let userData = await user.findById(req.params.id);
     return res.status(200).json({
-      status: "Personal Details Updated",
+      status: "Educational Details Updated",
       data: userData,
     });
   } catch (error) {
