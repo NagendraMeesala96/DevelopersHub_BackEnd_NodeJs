@@ -211,6 +211,19 @@ app.get("/allEmployees", middleware, async (req, res) => {
     });
   }
 });
+app.get("/allEmployeesList",async (req, res) => {
+  try {
+    let allProfiles = await user.find();
+
+    return res.json(allProfiles);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
+  }
+});
 //Get All Clients
 app.get("/allClients", middleware, async (req, res) => {
   try {
