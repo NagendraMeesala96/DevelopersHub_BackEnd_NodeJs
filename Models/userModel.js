@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
 const user = new mongoose.Schema({
-  
+  userType : {
+    type:String,
+    default:"Employee"
+  },
   FullName: {
     type: String,
     required: true,

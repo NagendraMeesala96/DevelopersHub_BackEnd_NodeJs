@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: "*" }));
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 const mongooseURL = `mongodb+srv://Nagendra9573:Nagendra9573@cluster0.j08ql.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 mongoose.connect(mongooseURL, (req, res) => {
@@ -34,8 +34,8 @@ app.post("/register", async (req, res) => {
 
     if (existUser) {
       return res.status(400).json({
-        status:"User Already Registered",
-        data:existUser
+        status: "User Already Registered",
+        data: existUser,
       });
     }
 
@@ -56,9 +56,9 @@ app.post("/register", async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      status:"Server Error",
-      data:error
-    })
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //ClientRegister
@@ -70,8 +70,8 @@ app.post("/Client/register", async (req, res) => {
 
     if (existUser) {
       return res.status(400).json({
-        status:"User Already Registered",
-        data:existUser
+        status: "User Already Registered",
+        data: existUser,
       });
     }
 
@@ -90,11 +90,11 @@ app.post("/Client/register", async (req, res) => {
       data: newUser,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({
-      status:"Server Error",
-      data:error
-    })
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Delete Employee by ID
@@ -152,6 +152,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
+//Admin Login
 app.post("/Admin/login", async (req, res) => {
   try {
     const { Email, Password } = req.body;
@@ -208,11 +209,10 @@ app.get("/allClients", middleware, async (req, res) => {
 //ClientPost
 app.post("/addClientPost", middleware, async (req, res) => {
   try {
-    const { PostTitle, Description, BidPrice, RequiredSkills } =
-      req.body;
+    const { PostTitle, Description, BidPrice, RequiredSkills } = req.body;
 
     let exist = await client.findById(req.users.id);
-    console.log(exist); 
+    console.log(exist);
     let newPost = new clientPost({
       OwnerDetails: {
         ClientName: exist.FullName,
@@ -227,8 +227,8 @@ app.post("/addClientPost", middleware, async (req, res) => {
     });
     await newPost.save();
     return res.status(200).json({
-      status:"Post Published Successfully",
-      data:newPost
+      status: "Post Published Successfully",
+      data: newPost,
     });
   } catch (error) {
     console.log(error);
@@ -249,7 +249,10 @@ app.get("/MyPosts", middleware, async (req, res) => {
     return res.status(200).json(MyPosts);
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Something Went Wrong",
+      data: error,
+    });
   }
 });
 //Get All Posts
@@ -266,14 +269,13 @@ app.get("/allPosts", middleware, async (req, res) => {
 //Delete Post by ID
 app.delete("/Post/:id", async (req, res) => {
   try {
-
     await clientPost.findByIdAndDelete(req.params.id);
     console.log("Post Deleted");
     let AllData = await clientPost.find();
-    console.log(AllData)
+    console.log(AllData);
     return res.status(200).json({
-      status:"Post Deleted",
-      data:AllData
+      status: "Post Deleted",
+      data: AllData,
     });
   } catch (err) {
     console.log(err.message);
@@ -457,7 +459,7 @@ app.post("/addReview", middleware, async (req, res) => {
 
     const exist = await client.findById(req.users.id);
 
-    console.log(req.users.id)
+    console.log(req.users.id);
 
     const newReview = new review({
       taskProvider: exist.FullName,
@@ -467,14 +469,14 @@ app.post("/addReview", middleware, async (req, res) => {
     });
     newReview.save();
     return res.status(200).json({
-      status:"Review Added",
+      status: "Review Added",
     });
   } catch (error) {
     console.log(error);
 
     return res.status(500).json({
-      status:"Server Error",
-      data:error
+      status: "Server Error",
+      data: error,
     });
   }
 });
@@ -721,7 +723,7 @@ app.put("/UpdateSocialMedia/:id", async (req, res) => {
   }
 });
 
-//Update Personal Details 
+//Update Personal Details
 app.put("/UpdatePersonalDetails/", middleware, async (req, res) => {
   const { FullName, JobRole, Mobile, Skills, Address, Projects } = req.body;
 
@@ -784,8 +786,8 @@ app.put("/UpdatePersonalDetails/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      status:"Server Error",
-      data:error
+      status: "Server Error",
+      data: error,
     });
   }
 });
@@ -826,8 +828,8 @@ app.put("/UpdateEducation/", middleware, async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      status:"Server Error",
-      data:error
+      status: "Server Error",
+      data: error,
     });
   }
 });
@@ -868,8 +870,8 @@ app.put("/UpdateEducation/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      status:"Server Error",
-      data:error
+      status: "Server Error",
+      data: error,
     });
   }
 });
@@ -900,8 +902,8 @@ app.put("/UpdateImg/", middleware, async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      status:"Server Error",
-      data:error
+      status: "Server Error",
+      data: error,
     });
   }
 });
@@ -932,11 +934,38 @@ app.put("/UpdateImg/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      status:"Server Error",
-      data:error
+      status: "Server Error",
+      data: error,
     });
   }
 });
+
+//Search Users
+
+// app.get("/Search",async (req, res)=>{
+
+//   const {name} =req.body;
+
+//   let allEmployees = await user.find();
+
+//   let allClients = await client.find();
+
+//   let result = allEmployees.filter((employee)=>{
+
+//     //console.log(employee.FullName);
+
+//     return employee.FullName.contains(name);
+
+//   })
+
+//   console.log(result)
+
+//   return res.status(200).json({
+//     status: "Search Data",
+//     data: result,
+//   });
+
+// })
 
 app.listen(PORT, () => {
   console.log(`Server Started At http://localhost:${PORT}/`);
