@@ -7,6 +7,10 @@ const clientPosts = new mongoose.Schema({
     ClientEmail: { type: String, required: true },
     ClientProfilePic: { type: String, required: true },
   },
+  PostOwnerId:{
+    type: String,
+    required: true,
+  },
   PostTitle: {
     type: String,
     required: true,
