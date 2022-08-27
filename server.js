@@ -106,7 +106,11 @@ app.delete("/employee/:id", async (req, res) => {
 
     return res.json(await user.find());
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Delete Client by ID
@@ -119,6 +123,10 @@ app.delete("/client/:id", async (req, res) => {
     return res.json(await client.find());
   } catch (err) {
     console.log(err.message);
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Login Users
@@ -148,7 +156,10 @@ app.post("/login", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 
@@ -179,7 +190,10 @@ app.post("/Admin/login", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 
@@ -191,7 +205,10 @@ app.get("/allEmployees", middleware, async (req, res) => {
     return res.json(allProfiles);
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Get All Clients
@@ -212,7 +229,6 @@ app.post("/addClientPost", middleware, async (req, res) => {
     const { PostTitle, Description, BidPrice, RequiredSkills } = req.body;
 
     let exist = await client.findById(req.users.id);
-    console.log(exist);
     let newPost = new clientPost({
       OwnerDetails: {
         ClientName: exist.FullName,
@@ -220,6 +236,7 @@ app.post("/addClientPost", middleware, async (req, res) => {
         ClientEmail: exist.Email,
         ClientProfilePic: exist.ProfilePic,
       },
+      PostOwnerId:exist._id,
       PostTitle,
       Description,
       BidPrice,
@@ -232,7 +249,10 @@ app.post("/addClientPost", middleware, async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Get My Posts
@@ -263,7 +283,10 @@ app.get("/allPosts", middleware, async (req, res) => {
     return res.json(allPosts);
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Delete Post by ID
@@ -279,6 +302,10 @@ app.delete("/Post/:id", async (req, res) => {
     });
   } catch (err) {
     console.log(err.message);
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Employee Post a bid
@@ -314,7 +341,10 @@ app.post("/PlaceBid", middleware, async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 
@@ -326,7 +356,10 @@ app.get("/AllBids", middleware, async (req, res) => {
     return res.json(allBids);
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 
@@ -342,8 +375,10 @@ app.get("/PostBid/:id", middleware, async (req, res) => {
     return res.status(200).json(postIdBid);
   } catch (error) {
     console.log(error);
-
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //My Bids
@@ -359,8 +394,10 @@ app.get("/MyBids", middleware, async (req, res) => {
     return res.status(200).json(MyBids);
   } catch (error) {
     console.log(error);
-
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Delete Bid by ID
@@ -371,6 +408,10 @@ app.delete("/Bid/:id", async (req, res) => {
     return res.json(await PostBid.find());
   } catch (err) {
     console.log(err.message);
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //check user already bid or not
@@ -395,8 +436,10 @@ app.post("/checkBid/:id", middleware, async (req, res) => {
     return res.status(200).json(result);
   } catch (error) {
     console.log(error);
-
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Get Post by Bid
@@ -435,7 +478,10 @@ app.put("/UpdateBid/:id", async (req, res) => {
     return res.json(await clientPost.find());
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 
@@ -448,7 +494,10 @@ app.post("/myProfile", middleware, async (req, res) => {
     return res.status(200).json(userData);
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 
@@ -473,7 +522,6 @@ app.post("/addReview", middleware, async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-
     return res.status(500).json({
       status: "Server Error",
       data: error,
@@ -493,8 +541,10 @@ app.get("/myReview", middleware, async (req, res) => {
     return res.status(200).json(myReviews);
   } catch (error) {
     console.log(error);
-
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 
@@ -506,8 +556,10 @@ app.get("/UserProfile/:id", async (req, res) => {
     return res.json(data);
   } catch (error) {
     console.log(error);
-
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 
@@ -525,8 +577,10 @@ app.get("/UserProfile/Ratings/:id", async (req, res) => {
     return res.json(matchData);
   } catch (error) {
     console.log(error);
-
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Delete Review
@@ -537,6 +591,10 @@ app.delete("/DeleteReview/:id", async (req, res) => {
     return res.json(await review.find());
   } catch (err) {
     console.log(err.message);
+    return res.status(500).json({
+      status: "Server Error",
+      data: err,
+    });
   }
 });
 //All Reviews
@@ -546,7 +604,10 @@ app.get("/AllReviews", middleware, async (req, res) => {
     return res.json(allReviews);
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Check Bid
@@ -571,8 +632,10 @@ app.post("/checkBid/:id", middleware, async (req, res) => {
     return res.status(200).json(result);
   } catch (error) {
     console.log(error);
-
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Get Post by Bid
@@ -585,7 +648,10 @@ app.get("/GetPost/:id", middleware, async (req, res) => {
     return res.status(200).json(post);
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Update Rating
@@ -613,7 +679,10 @@ app.put("/UpdateRating/:id", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Rating Calculations
@@ -650,7 +719,10 @@ app.put("/RatingCalculation/:id", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 //Update social Media
@@ -684,7 +756,10 @@ app.put("/UpdateSocialMedia/", middleware, async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 
@@ -719,7 +794,10 @@ app.put("/UpdateSocialMedia/:id", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 
@@ -752,7 +830,10 @@ app.put("/UpdatePersonalDetails/", middleware, async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
   }
 });
 
