@@ -575,11 +575,24 @@ app.get("/myReview", middleware, async (req, res) => {
   }
 });
 
-//Get Profile By ID
+//Get Emp Profile By ID
 app.get("/UserProfile/:id", async (req, res) => {
   try {
     const data = await user.findById(req.params.id);
+    return res.json(data);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: "Server Error",
+      data: error,
+    });
+  }
+});
 
+//GET Client Profile By ID
+app.get("/ClientProfile/:id", async (req, res) => {
+  try {
+    const data = await client.findById(req.params.id);
     return res.json(data);
   } catch (error) {
     console.log(error);
