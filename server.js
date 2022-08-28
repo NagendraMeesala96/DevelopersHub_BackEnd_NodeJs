@@ -152,7 +152,14 @@ app.post("/login", async (req, res) => {
 
     jwt.sign(payload, "jwtPassword", { expiresIn: 360000 }, (err, token) => {
       if (err) throw err;
-      return res.json({ token });
+      return res.json({
+        status: "Successfully LogIn",
+        token: token,
+        data: {
+          Name: exist.FullName,
+          ProfilePic: exist.ProfilePic,
+        },
+      });
     });
   } catch (error) {
     console.log(error);
@@ -186,7 +193,14 @@ app.post("/Admin/login", async (req, res) => {
 
     jwt.sign(payload, "jwtPassword", { expiresIn: 360000 }, (err, token) => {
       if (err) throw err;
-      return res.json({ token });
+      return res.json({
+        status: "Successfully LogIn",
+        token: token,
+        data: {
+          Name: exist.FullName,
+          ProfilePic: exist.ProfilePic,
+        },
+      });
     });
   } catch (error) {
     console.log(error);
@@ -211,7 +225,7 @@ app.get("/allEmployees", middleware, async (req, res) => {
     });
   }
 });
-app.get("/allEmployeesList",async (req, res) => {
+app.get("/allEmployeesList", async (req, res) => {
   try {
     let allProfiles = await user.find();
 
@@ -249,7 +263,7 @@ app.post("/addClientPost", middleware, async (req, res) => {
         ClientEmail: exist.Email,
         ClientProfilePic: exist.ProfilePic,
       },
-      PostOwnerId:exist._id,
+      PostOwnerId: exist._id,
       PostTitle,
       Description,
       BidPrice,
@@ -1036,24 +1050,22 @@ app.put("/UpdateImg/:id", async (req, res) => {
 
 //Search Users
 
-app.get("/Search",async (req, res)=>{
-
-  const {name} =req.body;
+app.get("/Search", async (req, res) => {
+  const { name } = req.body;
 
   let allEmployees = await user.find();
 
   let allClients = await client.find();
 
-  let result = [...allEmployees,...allClients];
+  let result = [...allEmployees, ...allClients];
 
-  console.log(result)
+  console.log(result);
 
   return res.status(200).json({
     status: "Search Data",
     data: result,
   });
-
-})
+});
 
 app.listen(PORT, () => {
   console.log(`Server Started At http://localhost:${PORT}/`);
