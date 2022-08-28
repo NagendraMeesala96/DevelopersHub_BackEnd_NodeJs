@@ -1036,30 +1036,24 @@ app.put("/UpdateImg/:id", async (req, res) => {
 
 //Search Users
 
-// app.get("/Search",async (req, res)=>{
+app.get("/Search",async (req, res)=>{
 
-//   const {name} =req.body;
+  const {name} =req.body;
 
-//   let allEmployees = await user.find();
+  let allEmployees = await user.find();
 
-//   let allClients = await client.find();
+  let allClients = await client.find();
 
-//   let result = allEmployees.filter((employee)=>{
+  let result = [...allEmployees,...allClients];
 
-//     //console.log(employee.FullName);
+  console.log(result)
 
-//     return employee.FullName.contains(name);
+  return res.status(200).json({
+    status: "Search Data",
+    data: result,
+  });
 
-//   })
-
-//   console.log(result)
-
-//   return res.status(200).json({
-//     status: "Search Data",
-//     data: result,
-//   });
-
-// })
+})
 
 app.listen(PORT, () => {
   console.log(`Server Started At http://localhost:${PORT}/`);
