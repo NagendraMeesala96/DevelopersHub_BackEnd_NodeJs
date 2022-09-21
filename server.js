@@ -21,7 +21,7 @@ app.use(function(req, res, next) {
 
 const PORT = process.env.PORT || 3001;
 
-const mongooseURL = `mongodb+srv://Nagendra9573:Nagendra9573@cluster0.j08ql.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const mongooseURL = `mongodb+srv://Nagendra957356:Nagendra957356@cluster0.up5nq37.mongodb.net/?retryWrites=true&w=majority`;
 mongoose.connect(mongooseURL, (req, res) => {
   console.log("DB Connected......");
 });
